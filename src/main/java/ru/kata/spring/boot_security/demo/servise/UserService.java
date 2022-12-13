@@ -39,7 +39,7 @@ public class UserService implements UserDetailsService {
         user.setPassword(new BCryptPasswordEncoder().encode(user.getPassword()));
         Set<Role> roleSetOld = user.getRoles();
         Set<Role> roleSetNew = new HashSet<>();
-        List<String> nameOfRoles = roleSetOld.stream().map(Role::getRole).collect(Collectors.toList());
+        List<String> nameOfRoles = roleSetOld.stream().map(Role::getName).collect(Collectors.toList());
         for (String role : nameOfRoles) {
             if (role.equals("ROLE_ADMIN")) {
                 roleSetNew.add(new Role("ROLE_ADMIN"));

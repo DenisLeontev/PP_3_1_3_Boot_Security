@@ -6,6 +6,7 @@ import org.hibernate.annotations.CascadeType;
 import org.springframework.security.core.GrantedAuthority;
 
 import javax.persistence.*;
+import java.util.Objects;
 import java.util.Set;
 @Entity
 @Table(name = "roles")
@@ -16,7 +17,7 @@ public class Role implements GrantedAuthority {
     private Long id;
 
     @Column(name = "role", nullable = false, length = 50)
-    private String role;
+    private String name;
 
     @Transient
     @ManyToMany(mappedBy = "roles")
@@ -25,13 +26,14 @@ public class Role implements GrantedAuthority {
 
     public Role() {
     }
-    public Role(String role) {
-        this.role = role;
+    public Role(String name) {
+      //  this.id = id;
+        this.name = name;
     }
-    public Role(Long id, String role) {
-        this.id = id;
-        this.role = role;
-    }
+//    public Role(Long id, String name) {
+//        this.id = id;
+//        this.name = name;
+//    }
     public Set<User> getUsers() {
         return users;
     }
@@ -44,29 +46,42 @@ public class Role implements GrantedAuthority {
     public void setId(Long id) {
         this.id = id;
     }
-     public String getRole() {
-        return role;
+     public String getName() {
+        return name;
     }
-    public void setName(String role) {
-        this.role = role;
+    public void setName(String name) {
+        this.name = name;
     }
     @Override
     public String getAuthority() {
-        return role;
+        return getName();
     }
     public String toString() {
-        return role;
+        return name;
     }
+//    @Override
+//    public boolean equals(Object o) {
+//        if (this == o) return true;
+//        if (o == null || getClass() != o.getClass()) return false;
+//        Role role = (Role) o;
+//        return role != null ? role.equals(role.name) : role.name == null;
+//    }
+//
+//    @Override
+//    public int hashCode() {
+//        return name != null ? name.hashCode() : 0;
+//    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
+        if (!(o instanceof Role)) return false;
         Role role = (Role) o;
-        return role != null ? role.equals(role.role) : role.role == null;
+        return Objects.equals(id, role.id);
     }
 
     @Override
     public int hashCode() {
-        return role != null ? role.hashCode() : 0;
+        return Objects.hash(id);
     }
 }
