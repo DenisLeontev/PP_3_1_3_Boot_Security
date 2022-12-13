@@ -5,11 +5,12 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import ru.kata.spring.boot_security.demo.model.Role;
-import ru.kata.spring.boot_security.demo.repositories.UserRepository;
 import ru.kata.spring.boot_security.demo.model.User;
+import ru.kata.spring.boot_security.demo.repositories.UserRepository;
 
 import java.util.HashSet;
 import java.util.List;
@@ -22,10 +23,10 @@ public class UserService implements UserDetailsService {
 
     private final UserRepository userRepository;
 
-    @Autowired
+       @Autowired
     public UserService(UserRepository userRepository) {
         this.userRepository = userRepository;
-    }
+          }
 
 
     @Transactional
@@ -35,9 +36,10 @@ public class UserService implements UserDetailsService {
 
     @Transactional
     public void createNewUser(User user) {
+        user.setPassword(new BCryptPasswordEncoder().encode(user.getPassword()));
         Set<Role> roleSetOld = user.getRoles();
         Set<Role> roleSetNew = new HashSet<>();
-        List<String> nameOfRoles = roleSetOld.stream().map(Role::getName).collect(Collectors.toList());
+        List<String> nameOfRoles = roleSetOld.stream().map(Role::getRole).collect(Collectors.toList());
         for (String role : nameOfRoles) {
             if (role.equals("ROLE_ADMIN")) {
                 roleSetNew.add(new Role("ROLE_ADMIN"));
@@ -55,8 +57,9 @@ public class UserService implements UserDetailsService {
     }
 
     @Transactional
-    public void updateUser(User updatedUser) {
-        userRepository.save(updatedUser);
+    public void updateUser(User user) {
+        user.setPassword(new BCryptPasswordEncoder().encode(user.getPassword()));
+        userRepository.save(user);
     }
 
     @Transactional

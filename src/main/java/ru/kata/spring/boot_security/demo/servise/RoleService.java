@@ -28,8 +28,8 @@ public class RoleService {
     }
 
     public List<Role> getUniqAllRoles() {
-        List<ru.kata.spring.boot_security.demo.model.Role> roleList = roleRepository.findAll();
-        Set<ru.kata.spring.boot_security.demo.model.Role> roleSet = new HashSet<>(roleList);
+        List<Role> roleList = roleRepository.findAll();
+        Set<Role> roleSet = new HashSet<>(roleList);
         roleList.clear();
         roleList.addAll(roleSet);
         return roleList;

@@ -56,7 +56,7 @@ public class User implements UserDetails {
         this.last_name = last_name;
         this.username = username;
         this.password = password;
-        this.roles = roles;
+        this.setRoles(roles);
     }
 
     public Long getId() {
@@ -99,7 +99,7 @@ public class User implements UserDetails {
     }
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
-        return roles.stream().map(r -> new SimpleGrantedAuthority(r.getName())).collect(Collectors.toList());
+        return roles.stream().map(r -> new SimpleGrantedAuthority(r.getRole())).collect(Collectors.toList());
     }
     @Override
     public boolean isAccountNonExpired() {

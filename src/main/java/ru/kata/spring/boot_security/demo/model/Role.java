@@ -15,8 +15,8 @@ public class Role implements GrantedAuthority {
     @Column(name = "id")
     private Long id;
 
-    @Column(name = "name", nullable = false, length = 50)
-    private String name;
+    @Column(name = "role", nullable = false, length = 50)
+    private String role;
 
     @Transient
     @ManyToMany(mappedBy = "roles")
@@ -25,12 +25,12 @@ public class Role implements GrantedAuthority {
 
     public Role() {
     }
-    public Role(String name) {
-        this.name = name;
+    public Role(String role) {
+        this.role = role;
     }
-    public Role(Long id, String name) {
+    public Role(Long id, String role) {
         this.id = id;
-        this.name = name;
+        this.role = role;
     }
     public Set<User> getUsers() {
         return users;
@@ -44,29 +44,29 @@ public class Role implements GrantedAuthority {
     public void setId(Long id) {
         this.id = id;
     }
-     public String getName() {
-        return name;
+     public String getRole() {
+        return role;
     }
-    public void setName(String name) {
-        this.name = name;
+    public void setName(String role) {
+        this.role = role;
     }
     @Override
     public String getAuthority() {
-        return name;
+        return role;
     }
     public String toString() {
-        return name;
+        return role;
     }
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         Role role = (Role) o;
-        return name != null ? name.equals(role.name) : role.name == null;
+        return role != null ? role.equals(role.role) : role.role == null;
     }
 
     @Override
     public int hashCode() {
-        return name != null ? name.hashCode() : 0;
+        return role != null ? role.hashCode() : 0;
     }
 }
