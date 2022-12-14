@@ -6,27 +6,27 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import ru.kata.spring.boot_security.demo.model.Role;
 import ru.kata.spring.boot_security.demo.model.User;
-import ru.kata.spring.boot_security.demo.servise.RoleService;
-import ru.kata.spring.boot_security.demo.servise.UserService;
+import ru.kata.spring.boot_security.demo.service.RoleServiceImpl;
+import ru.kata.spring.boot_security.demo.service.UserServiceImpl;
 
 import java.util.List;
 
 @Controller
 @RequestMapping("/admin")
 public class AdminController {
-    private final UserService userService;
+    private final UserServiceImpl userService;
 
-    private final RoleService roleService;
+    private final RoleServiceImpl roleService;
 
     @Autowired
-    public AdminController(UserService userService, RoleService roleService) {
+    public AdminController(UserServiceImpl userService, RoleServiceImpl roleService) {
         this.userService = userService;
         this.roleService = roleService;
     }
 
     @GetMapping
     public String showAllUsers(Model model) {
-        model.addAttribute("users", userService.getAllUser());
+        model.addAttribute("users", userService.getAllUsers());
         model.addAttribute("titleTable", "Список всех пользователей:");
         return "admin";
     }

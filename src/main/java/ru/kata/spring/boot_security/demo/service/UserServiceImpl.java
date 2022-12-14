@@ -1,4 +1,4 @@
-package ru.kata.spring.boot_security.demo.servise;
+package ru.kata.spring.boot_security.demo.service;
 
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,20 +19,21 @@ import java.util.stream.Collectors;
 
 @Service
 @Transactional
-public class UserService implements UserDetailsService {
+public class UserServiceImpl implements UserService, UserDetailsService {
 
     private final UserRepository userRepository;
 
-       @Autowired
-    public UserService(UserRepository userRepository) {
+    @Autowired
+    public UserServiceImpl(UserRepository userRepository) {
         this.userRepository = userRepository;
-          }
-
+    }
 
     @Transactional
-    public List<User> getAllUser() {
-        return userRepository.findAll();
+    @Override
+    public List<User> getAllUsers() {
+    return userRepository.findAll();
     }
+
 
     @Transactional
     public void createNewUser(User user) {
@@ -72,6 +73,7 @@ public class UserService implements UserDetailsService {
         return userRepository.findByUsername(username);
     }
 
+
     @Transactional
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
@@ -82,4 +84,5 @@ public class UserService implements UserDetailsService {
         return new org.springframework.security.core.userdetails.User(
                 user.getUsername(), user.getPassword(), user.getAuthorities());
     }
+
 }

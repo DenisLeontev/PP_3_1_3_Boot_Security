@@ -46,6 +46,7 @@
     <br>
 
     <label>Права доступа:
+        <!--/*@thymesVar id="id" type=""*/-->
         <input type="checkbox" name="roles"
                th:each="role : ${rolesAdd}"
                th:value="${role.id}"

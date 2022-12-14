@@ -1,4 +1,4 @@
-package ru.kata.spring.boot_security.demo.servise;
+package ru.kata.spring.boot_security.demo.service;
 
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -10,12 +10,12 @@ import java.util.List;
 import java.util.Set;
 
 @Service
-public class RoleService {
+public class RoleServiceImpl implements RoleService{
 
     private final RoleRepository roleRepository;
 
 
-    public RoleService(RoleRepository roleRepository) {
+    public RoleServiceImpl(RoleRepository roleRepository) {
         this.roleRepository = roleRepository;
     }
 
