@@ -34,17 +34,6 @@ public class UserServiceImpl implements UserService, UserDetailsService {
     @Transactional
     public void createNewUser(User user) {
         user.setPassword(new BCryptPasswordEncoder().encode(user.getPassword()));
-//        Set<Role> roleSetOld = user.getRoles();
-//        Set<Role> roleSetNew = new HashSet<>();
-//        List<String> nameOfRoles = roleSetOld.stream().map(Role::getName).collect(Collectors.toList());
-//        for (String role : nameOfRoles) {
-//            if (role.equals("ROLE_ADMIN")) {
-//                roleSetNew.add(new Role("ROLE_ADMIN"));
-//            } else if (role.equals("ROLE_USER")) {
-//                roleSetNew.add(new Role("ROLE_USER"));
-//            }
-//        }
- //       user.setRoles(roleSetNew);
         userRepository.save(user);
     }
 
