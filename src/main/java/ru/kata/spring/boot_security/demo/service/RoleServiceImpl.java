@@ -5,9 +5,7 @@ import org.springframework.transaction.annotation.Transactional;
 import ru.kata.spring.boot_security.demo.model.Role;
 import ru.kata.spring.boot_security.demo.repositories.RoleRepository;
 
-import java.util.HashSet;
 import java.util.List;
-import java.util.Set;
 
 @Service
 public class RoleServiceImpl implements RoleService{
@@ -23,21 +21,22 @@ public class RoleServiceImpl implements RoleService{
         return roleRepository.findById(id).get();
     }
 
+
     public List<Role> getAllRoles() {
         return roleRepository.findAll();
     }
 
+
+
     public List<Role> getUniqAllRoles() {
-        List<Role> roleList = roleRepository.findAll();
-        Set<Role> roleSet = new HashSet<>(roleList);
-        roleList.clear();
-        roleList.addAll(roleSet);
-        return roleList;
+        return roleRepository.findAll();
     }
 
     @Transactional
     public void addRole(Role role) {
         roleRepository.save(role);
     }
+
+
 
 }

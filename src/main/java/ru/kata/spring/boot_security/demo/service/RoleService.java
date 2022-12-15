@@ -11,4 +11,5 @@ public interface RoleService {
     public List<Role> getUniqAllRoles();
     public void addRole(Role role);
 
+
 }

@@ -47,9 +47,10 @@
     <label>Права доступа:
         <input type="checkbox" name="roles"
                th:each="role : ${rolesAdd}"
-               th:value="${role.id}"
-               th:text="${role.name}"
-        />
+               th:value="${role.getId()}"
+               th:text="${role.getName()}"
+               th:field="*{roles}"
+               />
     </label>
     <br>
     <br>

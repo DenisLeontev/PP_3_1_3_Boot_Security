@@ -1,10 +1,10 @@
 package ru.kata.spring.boot_security.demo.init;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.stereotype.Component;
 import ru.kata.spring.boot_security.demo.model.Role;
 import ru.kata.spring.boot_security.demo.model.User;
+import ru.kata.spring.boot_security.demo.repositories.RoleRepository;
 import ru.kata.spring.boot_security.demo.repositories.UserRepository;
 
 import java.util.HashSet;
@@ -12,37 +12,32 @@ import java.util.Set;
 
 @Component
 public class CommandLineRunnerImpl implements CommandLineRunner {
-    private UserRepository userRepository;
+    private final UserRepository userRepository;
+    private final RoleRepository roleRepository;
 
-    @Autowired
-    public CommandLineRunnerImpl(UserRepository userRepository) {
+    // @Autowired
+    public CommandLineRunnerImpl(UserRepository userRepository, RoleRepository roleRepository) {
         this.userRepository = userRepository;
+        this.roleRepository = roleRepository;
     }
 
     public void run(String... arg) throws Exception {
+        Role roleAdmin = new Role("ROLE_ADMIN");
+        Role roleUser = new Role("ROLE_USER");
         Set<Role> adminRoles = new HashSet<>();
-        adminRoles.add(new Role("ROLE_ADMIN"));
-        adminRoles.add(new Role("ROLE_USER"));
         Set<Role> userRoles = new HashSet<>();
-        userRoles.add(new Role("ROLE_USER"));
+        roleRepository.save(roleAdmin);
+        roleRepository.save(roleUser);
+        adminRoles.add(roleAdmin);
+        adminRoles.add(roleUser);
+        userRoles.add(roleUser);
 
-        // пользователь Admin
-        User userAdmin = new User();
-        userAdmin.setName("Денис");
-        userAdmin.setLast_name("Леонтьев");
-        userAdmin.setUsername("l1@mail.ru");
-        userAdmin.setPassword("$2y$10$08fime4hWZ5TMO.JkPEmXuIwyBchRDIbR/5QqtOnDtXE1s1LV52De");
-        userAdmin.setRoles(adminRoles);
+
+        // пользователи Admin  и User
+        User userAdmin = new User("Денис", "Леонтьев", "l1@mail.ru", "$2y$10$08fime4hWZ5TMO.JkPEmXuIwyBchRDIbR/5QqtOnDtXE1s1LV52De", adminRoles);
+        User userUser = new User("Ян", "Леонтьев", "l2@mail.ru", "$2y$10$GuP0CFLp71MpXFxHluKAy.t391.yfdkrTdSp6XRjvv2tnzGsTeH8O", userRoles);
         System.out.println(userAdmin);
         userRepository.save(userAdmin);
-
-        // пользователь User
-        User userUser = new User();
-        userUser.setName("Ян");
-        userUser.setLast_name("Леонтьев");
-        userUser.setUsername("l2@mail.ru");
-        userUser.setPassword("$2y$10$GuP0CFLp71MpXFxHluKAy.t391.yfdkrTdSp6XRjvv2tnzGsTeH8O");
-        userUser.setRoles(userRoles);
         System.out.println(userUser);
         userRepository.save(userUser);
 

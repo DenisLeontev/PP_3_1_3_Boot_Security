@@ -8,14 +8,10 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import ru.kata.spring.boot_security.demo.model.Role;
 import ru.kata.spring.boot_security.demo.model.User;
 import ru.kata.spring.boot_security.demo.repositories.UserRepository;
 
-import java.util.HashSet;
 import java.util.List;
-import java.util.Set;
-import java.util.stream.Collectors;
 
 @Service
 @Transactional
@@ -38,21 +34,23 @@ public class UserServiceImpl implements UserService, UserDetailsService {
     @Transactional
     public void createNewUser(User user) {
         user.setPassword(new BCryptPasswordEncoder().encode(user.getPassword()));
-        Set<Role> roleSetOld = user.getRoles();
-        Set<Role> roleSetNew = new HashSet<>();
-        List<String> nameOfRoles = roleSetOld.stream().map(Role::getName).collect(Collectors.toList());
-        for (String role : nameOfRoles) {
-            if (role.equals("ROLE_ADMIN")) {
-                roleSetNew.add(new Role("ROLE_ADMIN"));
-            } else if (role.equals("ROLE_USER")) {
-                roleSetNew.add(new Role("ROLE_USER"));
-            }
-        }
-        user.setRoles(roleSetNew);
+//        Set<Role> roleSetOld = user.getRoles();
+//        Set<Role> roleSetNew = new HashSet<>();
+//        List<String> nameOfRoles = roleSetOld.stream().map(Role::getName).collect(Collectors.toList());
+//        for (String role : nameOfRoles) {
+//            if (role.equals("ROLE_ADMIN")) {
+//                roleSetNew.add(new Role("ROLE_ADMIN"));
+//            } else if (role.equals("ROLE_USER")) {
+//                roleSetNew.add(new Role("ROLE_USER"));
+//            }
+//        }
+ //       user.setRoles(roleSetNew);
         userRepository.save(user);
     }
 
+
     @Transactional
+    @Override
     public User getUser(Long id) {
         return userRepository.findById(id).get();
     }
@@ -72,6 +70,8 @@ public class UserServiceImpl implements UserService, UserDetailsService {
     public User findUserByUsername(String username) {
         return userRepository.findByUsername(username);
     }
+
+
 
 
     @Transactional
